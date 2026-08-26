@@ -5,11 +5,25 @@ const AppStateContext = createContext(null);
 export function AppStateProvider({ children }) {
   const [userProfile, setUserProfile] = useState({
     name: "Rajesh Kumar",
-    location: "Jalgaon, MH",
+    age: "",
+    gender: "",
+    mobile: "",
+    village: "Jalgaon",
+    district: "Jalgaon",
+    state: "MH",
+    occupation: "",
+    existingBusiness: "no",
     businessType: "",
+    experience: "",
+    employees: "",
     budget: 50000,
+    incomeRange: "",
+    loanRequired: "no",
+    existingLoans: "no",
+    language: "en",
     goals: [],
-    language: "en"
+    skills: [],
+    assets: []
   });
 
   const [hasCompletedAdvisor, setHasCompletedAdvisor] = useState(false);
