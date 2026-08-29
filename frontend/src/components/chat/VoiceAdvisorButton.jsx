@@ -54,21 +54,29 @@ export function VoiceAdvisorButton({ onTranscript, className }) {
   }, [isListening]);
 
   return (
-    <button
-      type="button"
-      onClick={startListening}
-      disabled={isListening}
-      className={cn(
-        "flex items-center justify-center rounded-full p-2.5 transition-all duration-300",
-        isListening 
-          ? "bg-red-100 text-red-600 animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.5)]" 
-          : "bg-emerald-100 text-emerald-600 hover:bg-emerald-200",
-        className
-      )}
-      title="Voice Advisor"
-    >
-      <Mic className="w-5 h-5" />
-      {isListening && <span className="sr-only">Listening{dots}</span>}
-    </button>
+    <div className="relative group flex items-center">
+      {/* Tooltip that is highly visible */}
+      <div className="absolute right-full mr-3 whitespace-nowrap bg-emerald-900 text-white text-xs font-medium py-1.5 px-3 rounded-xl shadow-warm border border-emerald-800 animate-in fade-in slide-in-from-right-2 hidden sm:block">
+        Ask in your language
+        <div className="absolute top-1/2 -right-1.5 w-3 h-3 bg-emerald-900 transform rotate-45 -translate-y-1/2 border-t border-r border-emerald-800"></div>
+      </div>
+      
+      <button
+        type="button"
+        onClick={startListening}
+        disabled={isListening}
+        className={cn(
+          "flex items-center justify-center rounded-full p-2.5 transition-all duration-300 relative z-10",
+          isListening 
+            ? "bg-red-100 text-red-600 animate-pulse shadow-[0_0_15px_rgba(220,38,38,0.5)]" 
+            : "bg-emerald-100 text-emerald-600 hover:bg-emerald-200",
+          className
+        )}
+        title="Voice Advisor"
+      >
+        <Mic className="w-5 h-5" />
+        {isListening && <span className="sr-only">Listening{dots}</span>}
+      </button>
+    </div>
   );
 }

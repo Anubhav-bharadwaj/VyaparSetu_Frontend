@@ -228,7 +228,7 @@ export function EditProfileModal({ isOpen, onClose, userProfile, onSave }) {
               <div>
                 <label className="block text-sm font-medium text-ink-900 mb-2">Available Assets</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {['Own Land', 'Farm Equipment', 'Shop Space', 'Vehicle', 'Warehouse', 'Internet Access'].map(asset => (
+                  {['Small Shop', 'Dairy Animals', 'Agricultural Land', 'Tractor', 'Warehouse', 'Food Processing Equipment'].map(asset => (
                     <label key={asset} className="flex items-center space-x-2 p-2 bg-white border border-beige-200 rounded-lg cursor-pointer hover:bg-emerald-50">
                       <input type="checkbox" name="assets" value={asset} checked={(formData.assets || []).includes(asset)} onChange={handleChange} className="w-4 h-4 text-emerald-600 rounded" />
                       <span className="text-sm font-medium">{asset}</span>

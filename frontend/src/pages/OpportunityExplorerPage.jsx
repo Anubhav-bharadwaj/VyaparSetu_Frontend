@@ -14,9 +14,9 @@ export function OpportunityExplorerPage() {
 
   // Filter logic
   const filteredOpportunities = mockOpportunities.filter(opp => {
-    const matchesSearch = opp.name.toLowerCase().includes(searchTerm.toLowerCase()) || opp.villageName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = opp.title.toLowerCase().includes(searchTerm.toLowerCase()) || opp.location.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCat = activeCategory === 'All' || opp.category === activeCategory;
-    const matchesDemand = demandFilter === 'All' || opp.demandLevel.toLowerCase() === demandFilter.toLowerCase();
+    const matchesDemand = demandFilter === 'All' || opp.demand.toLowerCase() === demandFilter.toLowerCase();
     return matchesSearch && matchesCat && matchesDemand;
   });
 
@@ -75,13 +75,13 @@ export function OpportunityExplorerPage() {
               {filteredOpportunities.map(opp => (
                 <div key={opp.id} className="bg-white p-4 rounded-xl border border-beige-200 shadow-sm flex flex-col">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-medium text-emerald-900">{opp.name}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${opp.demandLevel === 'high' ? 'bg-success/20 text-success' : opp.demandLevel === 'medium' ? 'bg-harvest-500/20 text-harvest-500' : 'bg-beige-200 text-ink-500'}`}>
-                      {opp.demandLevel} demand
+                    <h3 className="font-medium text-emerald-900">{opp.title}</h3>
+                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${opp.demand === 'Very High' ? 'bg-success/20 text-success' : opp.demand === 'High' ? 'bg-harvest-500/20 text-harvest-500' : 'bg-beige-200 text-ink-500'}`}>
+                      {opp.demand} demand
                     </span>
                   </div>
                   <p className="text-sm text-ink-500 mb-1">{opp.category}</p>
-                  <p className="text-sm text-ink-500 mb-4">{opp.villageName} • {opp.distanceKm}km away</p>
+                  <p className="text-sm text-ink-500 mb-4">{opp.location.name}</p>
                   <Button variant="outline" size="sm" className="mt-auto w-full">View in Advisor</Button>
                 </div>
               ))}

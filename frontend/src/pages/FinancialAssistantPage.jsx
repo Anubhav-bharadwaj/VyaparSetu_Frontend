@@ -44,13 +44,6 @@ export function FinancialAssistantPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1 space-y-6">
           <FinancialInputForm onSubmit={handleSubmit} isLoading={isLoading} />
-          
-          {!financials && !isLoading && (
-            <Card className="bg-emerald-50 border border-emerald-100 flex flex-col items-center justify-center py-12 text-center">
-              <Banknote size={48} className="text-emerald-200 mb-4" />
-              <p className="text-emerald-800 font-medium px-4">Submit your financial parameters to generate your personalized roadmap.</p>
-            </Card>
-          )}
 
           {isLoading && (
             <div className="space-y-4">
@@ -60,10 +53,10 @@ export function FinancialAssistantPage() {
           )}
 
           {financials && !isLoading && (
-            <>
+            <div className="animate-in fade-in slide-in-from-bottom-4 space-y-6">
               <FinancialHealthMeter health={financials.healthMeter} />
               <FundingMatchList matches={financials.fundingMatches} />
-            </>
+            </div>
           )}
         </div>
 
@@ -75,6 +68,35 @@ export function FinancialAssistantPage() {
               <Skeleton className="h-24 w-full" />
               <Skeleton className="h-24 w-full" />
               <Skeleton className="h-80 w-full col-span-2" />
+            </div>
+          )}
+
+          {!financials && !isLoading && (
+            <div className="h-full min-h-[500px] bg-white border border-beige-200 rounded-2xl relative overflow-hidden flex flex-col">
+              {/* Blurred Mock Content Background */}
+              <div className="absolute inset-0 opacity-20 filter blur-sm pointer-events-none p-6 space-y-6">
+                <div className="grid grid-cols-4 gap-4">
+                   <div className="h-24 bg-beige-300 rounded-xl"></div>
+                   <div className="h-24 bg-beige-300 rounded-xl"></div>
+                   <div className="h-24 bg-beige-300 rounded-xl"></div>
+                   <div className="h-24 bg-beige-300 rounded-xl"></div>
+                </div>
+                <div className="grid grid-cols-2 gap-6">
+                   <div className="h-64 bg-beige-300 rounded-xl"></div>
+                   <div className="h-64 bg-beige-300 rounded-xl"></div>
+                </div>
+              </div>
+              
+              {/* Foreground CTA */}
+              <div className="relative z-10 flex flex-col items-center justify-center h-full flex-1 text-center px-4 py-20">
+                <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mb-6 shadow-sm border border-emerald-100">
+                  <Banknote size={40} />
+                </div>
+                <h3 className="font-fraunces text-2xl text-emerald-900 mb-3">AI Financial Plan Not Generated</h3>
+                <p className="text-ink-500 max-w-md mx-auto mb-8">
+                  Adjust your budget, savings, and loan expectations on the left, then click <strong>"Build My Financial Roadmap"</strong> to unlock your customized ROI forecast, break-even analysis, and funding mix.
+                </p>
+              </div>
             </div>
           )}
 

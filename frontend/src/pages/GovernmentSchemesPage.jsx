@@ -4,11 +4,11 @@ import { SchemeFilterBar } from '../components/schemes/SchemeFilterBar';
 import { SchemeEligibilityForm } from '../components/schemes/SchemeEligibilityForm';
 import { mockSchemes } from '../data/mockSchemes';
 import { Card } from '../components/ui/Card';
+import { useAppState } from '../context/AppStateContext';
 
 export function GovernmentSchemesPage() {
   const [filteredSchemes, setFilteredSchemes] = useState(mockSchemes);
-  const [hasCheckedEligibility, setHasCheckedEligibility] = useState(false);
-  const [eligibilityData, setEligibilityData] = useState(null);
+  const { userProfile } = useAppState();
 
   const handleFilterChange = (searchTerm, activeTag) => {
     let filtered = mockSchemes;
@@ -27,13 +27,23 @@ export function GovernmentSchemesPage() {
     setFilteredSchemes(filtered);
   };
 
-  const handleEligibilityChecked = (data) => {
-    setHasCheckedEligibility(true);
-    setEligibilityData(data);
-    // In a real app, backend API would return personalized schemes based on data.
-    // Here we'll just prioritize PMEGP and MUDRA in the sort order or filter.
-    // For mock purposes, just display a success message and keep the filter active.
+  // Mock eligibility logic based on global userProfile
+  const checkEligibility = (schemeName) => {
+    if (schemeName === 'Stand-Up India') {
+      // Stand-Up India is typically for SC/ST and/or women entrepreneurs
+      return userProfile.gender === 'female';
+    }
+    if (schemeName === 'PMFME') {
+      // Food processing
+      return ['Agriculture', 'Dairy', 'Food Processing'].includes(userProfile.businessType) || userProfile.skills?.includes('Food Processing');
+    }
+    if (schemeName === 'PMEGP' || schemeName === 'MUDRA Yojana') {
+      return true; // Broadly applicable
+    }
+    return true;
   };
+
+  const prioritySchemes = ['PMEGP', 'MUDRA Yojana', 'PMFME', 'Stand-Up India'];
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto animate-in fade-in">
@@ -42,24 +52,22 @@ export function GovernmentSchemesPage() {
         <p className="text-ink-500">Discover and apply for financial assistance, subsidies, and grants.</p>
       </div>
 
-      <div className="mb-8">
-        <SchemeEligibilityForm onEligibilityChecked={handleEligibilityChecked} />
-      </div>
-
-      {hasCheckedEligibility && (
-        <div className="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-900 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between">
-          <div>
-            <span className="font-medium">Personalized Matches Active. </span> 
-            <span className="text-sm opacity-90">Showing schemes most relevant to {eligibilityData?.gender}, {eligibilityData?.locationType} {eligibilityData?.businessType} entrepreneurs.</span>
-          </div>
-          <button 
-            onClick={() => setHasCheckedEligibility(false)}
-            className="text-sm text-emerald-600 font-medium hover:underline mt-2 md:mt-0"
-          >
-            Clear Preferences
-          </button>
+      <Card className="mb-8 bg-gradient-to-br from-emerald-50 to-white border-emerald-100 shadow-sm">
+        <h2 className="font-fraunces text-xl font-medium text-emerald-900 mb-4">Eligible Schemes for You</h2>
+        <p className="text-sm text-ink-500 mb-6">Based on your Profile Hub details (Budget: ₹{Number(userProfile.budget || 0).toLocaleString('en-IN')}, Sector: {userProfile.businessType || 'N/A'})</p>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {prioritySchemes.map(scheme => {
+            const isEligible = checkEligibility(scheme);
+            return (
+              <div key={scheme} className={`p-4 rounded-xl border ${isEligible ? 'bg-white border-emerald-200 shadow-sm' : 'bg-beige-50 border-beige-200 opacity-70'} flex items-center justify-between`}>
+                <span className={`font-medium ${isEligible ? 'text-emerald-900' : 'text-ink-500'}`}>{scheme}</span>
+                <span className="text-lg">{isEligible ? '✅' : '❌'}</span>
+              </div>
+            );
+          })}
         </div>
-      )}
+      </Card>
 
       <SchemeFilterBar onFilterChange={handleFilterChange} />
 

@@ -40,8 +40,22 @@ export function RecommendationCard({ recommendation }) {
           <ProgressRing progress={recommendation.opportunityScore} size={50} strokeWidth={4} />
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <p className="text-sm text-ink-500 line-clamp-2 mb-4">{recommendation.description}</p>
+          
+          {recommendation.whyRecommended && (
+            <div className="mb-4 bg-emerald-50/50 p-3 rounded-lg border border-emerald-100">
+              <p className="text-xs font-semibold text-emerald-800 mb-2">Why Recommended?</p>
+              <ul className="space-y-1">
+                {recommendation.whyRecommended.map((reason, idx) => (
+                  <li key={idx} className="text-xs text-emerald-700 flex items-start">
+                    <span className="mr-1.5 mt-0.5">•</span>
+                    <span className="leading-tight">{reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-beige-200 mt-auto">

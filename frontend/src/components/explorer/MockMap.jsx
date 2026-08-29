@@ -52,16 +52,16 @@ export function MockMap({ opportunities, showHeatmap }) {
         />
 
         {showHeatmap && opportunities.map(opp => (
-          (opp.demandLevel === 'high' || opp.demandLevel === 'medium') && (
+          (opp.demand === 'High' || opp.demand === 'Very High') && (
             <Circle 
               key={`heat-${opp.id}`}
-              center={[opp.lat, opp.lng]}
+              center={[opp.location.lat, opp.location.lng]}
               pathOptions={{
-                fillColor: opp.demandLevel === 'high' ? '#C8862E' : '#0F7B54',
+                fillColor: opp.demand === 'Very High' ? '#C8862E' : '#0F7B54',
                 fillOpacity: 0.2,
                 weight: 0
               }}
-              radius={opp.demandLevel === 'high' ? 3000 : 1500}
+              radius={opp.demand === 'Very High' ? 3000 : 1500}
             />
           )
         ))}
@@ -69,7 +69,7 @@ export function MockMap({ opportunities, showHeatmap }) {
         {opportunities.map((opp) => (
           <Marker 
             key={opp.id} 
-            position={[opp.lat, opp.lng]} 
+            position={[opp.location.lat, opp.location.lng]} 
             icon={createIcon(opp)}
             eventHandlers={{
               click: () => setSelectedPin(opp),
@@ -89,11 +89,11 @@ export function MockMap({ opportunities, showHeatmap }) {
             </button>
             
             <div className="pr-6 mb-2">
-              <Badge variant={selectedPin.demandLevel === 'high' ? 'success' : selectedPin.demandLevel === 'medium' ? 'warning' : 'neutral'}>
-                {selectedPin.demandLevel.charAt(0).toUpperCase() + selectedPin.demandLevel.slice(1)} Demand
+              <Badge variant={selectedPin.demand === 'Very High' ? 'success' : selectedPin.demand === 'High' ? 'warning' : 'neutral'}>
+                {selectedPin.demand} Demand
               </Badge>
-              <h4 className="font-fraunces font-medium text-lg text-emerald-900 mt-2">{selectedPin.name}</h4>
-              <p className="text-sm text-ink-500">{selectedPin.villageName} • {selectedPin.distanceKm}km away</p>
+              <h4 className="font-fraunces font-medium text-lg text-emerald-900 mt-2">{selectedPin.title}</h4>
+              <p className="text-sm text-ink-500">{selectedPin.location.name}</p>
             </div>
             
             <div className="mt-4 pt-3 border-t border-beige-200">
