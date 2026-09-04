@@ -79,4 +79,4 @@ VyaparSetu was designed with a focus on **trust, clarity, and accessibility**:
 
 ---
 
-*Note: This is a standalone frontend prototype built to explore and validate the UI/UX requirements for VyaparSetu before full-scale development. *
+*Note: This is a standalone frontend prototype built to explore and validate the UI/UX requirements for VyaparSetu before full-scale development.*
